@@ -11,6 +11,8 @@ It provides a reproducible foundation for applications that integrate with AI or
 
 This repository is designed to be cloned or templated directly using GitHub’s “Use this template” feature.
 
+For a directory-by-directory walkthrough of the template’s assets, consult [`docs/PROJECT_ARTIFACTS.md`](docs/PROJECT_ARTIFACTS.md).
+
 ---
 
 ## Tech Stack
@@ -42,9 +44,15 @@ codex-java-starter/
 ├── pom.xml
 ├── ai/
 │   └── context/
+├── docs/
+│   └── PROJECT_ARTIFACTS.md
+├── e2e/
+│   ├── actuator.http
+│   └── health.http
 ├── src/
-│   ├── main/java/com/example/app/
-│   └── test/java/com/example/app/
+│   ├── main/java/com/bobwares/
+│   ├── main/resources/
+│   └── test/resources/
 └── README.md
 ```
 
