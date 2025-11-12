@@ -3,31 +3,34 @@
   App: Codex Java Starter
   Package: root
   File: pom.xml
-  Version: 0.1.0
+  Version: 0.2.0
   Turns: Turn 0
   Author: Bobwares
-  Date: 2025-10-30T08:07:15Z
+  Date: 2025-11-11T00:00:00Z
   Exports: Maven build descriptor
-  Description: Configures Spring Boot, dependencies, and build plugins for the registration service.
+  Description: Defines all core and variant dependencies (REST, DB Access, Web Client, Messaging)
+               for Codex agent-generated projects. The base service exposes two /actuator endpoints
+               and remains runnable before expansion.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.bobwares.codex</groupId>
     <artifactId>starter</artifactId>
-    <version>0.1.0</version>
-    <name>Codex Java REST API Starter</name>
-    <description>Codex Java REST API Starter</description>
+    <version>0.2.0</version>
+    <name>Codex Java Starter</name>
+    <description>Unified Codex Java Starter Template (REST, DB, Web Client, Messaging)</description>
     <packaging>jar</packaging>
 
     <properties>
         <java.version>21</java.version>
         <spring-boot.version>3.3.4</spring-boot.version>
         <springdoc.version>2.6.0</springdoc.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
         <testcontainers.version>1.20.1</testcontainers.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
     </properties>
 
     <dependencyManagement>
@@ -43,7 +46,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Web + Validation -->
+        <!-- === Base REST Layer === -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -53,45 +56,88 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Configuration metadata generation -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.liquibase</groupId>-->
-<!--            <artifactId>liquibase-core</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.postgresql</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--        </dependency>-->
-        <!-- Actuator -->
+        <!-- === Actuator === -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- OpenAPI UI -->
+        <!-- === OpenAPI UI === -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
 
-        <!-- Lombok (ergonomics) -->
+        <!-- === Lombok === -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- Test -->
+        <!-- === Configuration Processor === -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- ===================================================================== -->
+        <!-- CODING AGENT INSTRUCTION: Uncomment for Database Access variant        -->
+        <!-- Required when generated code defines @Entity, @Repository, or JPA API. -->
+        <!-- ===================================================================== -->
+        <!--
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        -->
+
+        <!-- ===================================================================== -->
+        <!-- CODING AGENT INSTRUCTION: Uncomment for Web Client variant             -->
+        <!-- Required when generated code performs external HTTP calls or APIs.     -->
+        <!-- ===================================================================== -->
+        <!--
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        -->
+
+        <!-- ===================================================================== -->
+        <!-- CODING AGENT INSTRUCTION: Uncomment for Messaging variant              -->
+        <!-- Required when generated code uses Kafka, RabbitMQ, or JMS APIs.        -->
+        <!-- ===================================================================== -->
+        <!--
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        -->
+
+        <!-- === Test Dependencies === -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -108,17 +154,23 @@
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.testcontainers</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--            <version>${testcontainers.version}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+
+        <!-- ===================================================================== -->
+        <!-- CODING AGENT INSTRUCTION: Uncomment for Database Access variant tests  -->
+        <!-- Required when generated integration tests use PostgreSQL Testcontainers -->
+        <!-- ===================================================================== -->
+        <!--
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        -->
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -128,7 +180,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -137,6 +188,7 @@
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -147,6 +199,7 @@
                     </includes>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
